@@ -85,7 +85,6 @@ export const ensureAuthUser: RequestHandler = (req, res, next) => {
   if (req.authentication?.hasSignedin) {
     next();
   } else {
-    req.dialogMessage?.setMessage("You must be logged in");
-    res.redirect("/login");
+    res.status(401).render("401");
   }
 };

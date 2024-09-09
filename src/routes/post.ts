@@ -36,8 +36,12 @@ postRouter.get("/new", ensureAuthUser, (req, res) => {
 postRouter.get("/:postId", ensureAuthUser, async (req, res, next) => {
   const {postId} = req.params;
   const post = await Post.find(Number(postId));
-  if (!post || !post.id)
+  if (!post || !post.id){
+    res.status(404).render("404");
     return next(new Error("Invalid error: The post or post.id is undefined."));
+  }
+
+    
   const user = await post.user();
   const currentUserId = req.authentication?.currentUserId;
   if (currentUserId === undefined) {
