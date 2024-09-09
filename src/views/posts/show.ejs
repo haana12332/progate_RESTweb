@@ -1,0 +1,69 @@
+<div class="main posts-show">
+  <div class="container">
+    <div class="posts-show-item">
+      <div class="post-user-name">
+        <img class="posts-show-item-image" src="<%= user.imageName %>" data-test="user-image">
+        <a href="/users/<%= user.id %>" data-test="user-name"><%= user.name %></a>
+      </div>
+      <p data-test="post-content">
+        <%= post.content %>
+      </p>
+      <div class="post-time" data-test="post-time">
+        <%= postCreatedAt %>
+      </div>
+      <% if(!hasLiked){ %>
+        <form action="/likes/<%= post.id %>" method="POST" data-test="form-like">
+          <button type="submit" data-test="submit-like" class="like-btn like">
+            <span class="material-icons" data-test="favorite-icon">favorite_border</span>
+          </button>
+        </form>
+      <% } else { %>
+      <form action="/likes/<%= post.id %>?_method=DELETE" method="POST" data-test="form-like">
+        <button type="submit" data-test="submit-like" class="like-btn unlike">
+          <span class="material-icons" data-test="favorite-icon">favorite</span>
+        </button>
+      </form>
+      <% } %>
+      <span data-test="like-count"><%= likeCount %></span>
+      <% if(user.equal(currentUser)) { %>
+        <div class="post-menus">
+          <a href="/posts/<%= post.id %>/edit" data-test="post-link-edit">Edit</a>
+          <form action="/posts/<%= post.id %>?_method=DELETE" method="POST" data-test="form-like-delete">
+            <input type="submit" value="delete" data-test="submit-post-delete">
+          </form>
+        </div>
+      <% } %>
+      <div class="comments-new">
+        <form action=""  data-test="form">
+          <div class="comments-form">
+            <textarea name="content" data-test="textarea-content" required></textarea>
+            <input type="submit" value="Comment" data-test="submit">
+          </div>
+        </form>  
+      </div>
+      <div class="comments-container" data-test="comments-container">
+        <% comments.forEach(comment => { %>
+          <div class="comments-index-item">
+            <div class="comment-left">
+              <div class="comment-user-image">
+                <img src="<%= comment.user.imageName %>" data-test="comment-user-image">
+              </div>
+            </div>
+            <div class="comment-right">
+              <a href="/users/<%= comment.user.id %>" class="comment-user-name" data-test="comment-user-name"><%= comment.user.name %></a>
+              <div class="comment-content" data-test="comment-content"><%= comment.content %></div>
+              <% if(comment.user.equal(currentUser)) {%>
+              <div class="comment-menus">
+                <a href="" data-test="link-comment-edit">Edit</a>
+                <form action="" data-test="form-comment-delete">
+                  <input type="submit" value="delete" data-test="submit-comment-delete">
+                </form>
+              </div>
+              <% } %>
+            </div>
+          </div>    
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</div>
