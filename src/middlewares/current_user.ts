@@ -1,7 +1,7 @@
 import {RequestHandler} from "express";
 import {User} from "@/models/user";
 import {Post} from "@/models/post";
-
+import {Comment} from "@/models/comment";
 /**
  * If logged in, set the user information to currentUser.
  * If not logged in, set null.
@@ -36,7 +36,23 @@ export const ensureOwnerOfPost: RequestHandler = async (req, res, next) => {
     res.locals.post = post;
     next();
   } else {
-    req.dialogMessage?.setMessage("Unauthorized access");
-    res.redirect("/posts");
+    if( post === undefined){
+      res.status(404).render("404");
+    }
+    res.status(403).render("403");
+  }
+};
+export const ensureOwnerOfComment: RequestHandler = async (req, res, next) => {
+  const {commentId} = req.params;
+  const comment = await Comment.find(Number(commentId));
+  const owner = await comment?.user();
+  if (owner && owner.id === req.authentication?.currentUserId) {
+    res.locals.comment = comment;
+    next();
+  } else {
+    if( comment === undefined){
+      res.status(404).render("404");
+    }
+    res.status(403).render("403");
   }
 };

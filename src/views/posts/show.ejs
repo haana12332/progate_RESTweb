@@ -55,7 +55,7 @@
               <div class="comment-content" data-test="comment-content"><%= comment.content %></div>
               <% if(comment.user.equal(currentUser)) {%>
               <div class="comment-menus">
-                <a href="" data-test="link-comment-edit">Edit</a>
+                <a href="/posts/<%= post.id %>/comments/<%= comment.id %>/edit" data-test="link-comment-edit">Edit</a>
                 <form action="" data-test="form-comment-delete">
                   <input type="submit" value="delete" data-test="submit-comment-delete">
                 </form>
